@@ -1,6 +1,6 @@
-from datetime import datetime
-from typing import List, Any, Optional
 from copy import deepcopy
+from datetime import datetime
+from typing import Any, List, Optional
 
 from langchain.retrievers import TimeWeightedVectorStoreRetriever
 from langchain.schema import Document

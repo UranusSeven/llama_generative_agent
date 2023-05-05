@@ -3,9 +3,9 @@ import re
 from datetime import datetime
 from typing import List
 
-from langchain import LLMChain, PromptTemplate
-from langchain.prompts import FewShotPromptWithTemplates
-from langchain.experimental.generative_agents.memory import GenerativeAgentMemory
+from langchain import PromptTemplate
+from langchain.experimental.generative_agents.memory import \
+    GenerativeAgentMemory
 from langchain.schema import Document
 
 logger = logging.getLogger(__name__)
@@ -14,17 +14,19 @@ logger = logging.getLogger(__name__)
 class LlamaGenerativeAgentMemory(GenerativeAgentMemory):
     def _score_memory_importance(self, memory_content: str) -> float:
         """Score the absolute importance of the given memory."""
-        template = ("On the scale of 1 to 10, where 1 is not important at all"
-                  + " (e.g., brushing teeth, making bed) and 10 is"
-                  + " extremely important (e.g., a break up, college"
-                  + " acceptance), rate the importance of the"
-                  + " following piece of memory. You must respond with a single integer."
-                  + "\nMemory: I met my wife Jane when I was 23"
-                  + "\nRating: 9"
-                    "\nMemory: I visited Italy in 2020"
-                    "\nRating: 5"
-                    "\nMemory: {memory_content}"
-                    "\nRating: ")
+        template = (
+            "On the scale of 1 to 10, where 1 is not important at all"
+            + " (e.g., brushing teeth, making bed) and 10 is"
+            + " extremely important (e.g., a break up, college"
+            + " acceptance), rate the importance of the"
+            + " following piece of memory. You must respond with a single integer."
+            + "\nMemory: I met my wife Jane when I was 23"
+            + "\nRating: 9"
+            "\nMemory: I visited Italy in 2020"
+            "\nRating: 5"
+            "\nMemory: {memory_content}"
+            "\nRating: "
+        )
         prompt = PromptTemplate.from_template(template)
 
         score = self.chain(prompt).run(memory_content=memory_content).strip()
@@ -44,6 +46,7 @@ class LlamaGenerativeAgentMemory(GenerativeAgentMemory):
                 continue
             content_strs.add(mem.page_content)
             created_time = datetime.fromisoformat(mem.metadata["created_at"]).strftime(
-                "%B %d, %Y, %I:%M %p")
+                "%B %d, %Y, %I:%M %p"
+            )
             content.append(f"- {created_time}: {mem.page_content.strip()}")
         return "\n".join([f"{mem}" for mem in content])

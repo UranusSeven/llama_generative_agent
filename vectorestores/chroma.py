@@ -1,18 +1,18 @@
 import logging
-from typing import Any, List, Tuple, Optional, Callable, Dict
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import chromadb
 from chromadb.errors import NoIndexException
 from langchain.schema import Document
 from langchain.vectorstores import Chroma
 
-
 logger = logging.getLogger(__name__)
 
 
 def default_relevance_score_fn(score: float):
     import math
-    return 1 / (1 + math.exp(-score/100000)) - 0.5
+
+    return 1 / (1 + math.exp(-score / 100000)) - 0.5
 
 
 def _results_to_docs_and_scores(results: Any) -> List[Tuple[Document, float]]:
@@ -32,25 +32,22 @@ class EnhancedChroma(Chroma):
     def __init__(
         self,
         relevance_score_fn: Callable[[float], float] = default_relevance_score_fn,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
         self.relevance_score_fn = relevance_score_fn
 
     def _similarity_search_with_relevance_scores(
-        self,
-        query: str,
-        k: int = 4,
-        **kwargs: Any
+        self, query: str, k: int = 4, **kwargs: Any
     ) -> List[Tuple[Document, float]]:
         """Return docs and their similarity scores on a scale from 0 to 1."""
         if self.relevance_score_fn is None:
-            raise ValueError(
-                "a relevance_score_fn is required."
-            )
+            raise ValueError("a relevance_score_fn is required.")
         try:
             docs_and_scores = self.similarity_search_with_score(query, k=k)
-            return [(doc, self.relevance_score_fn(score)) for doc, score in docs_and_scores]
+            return [
+                (doc, self.relevance_score_fn(score)) for doc, score in docs_and_scores
+            ]
         except NoIndexException:
             return []
 
@@ -101,7 +98,7 @@ class EnhancedChroma(Chroma):
                     where=where,
                 )
             except chromadb.errors.NotEnoughElementsException:
-                logger.error(
+                logger.warning(
                     f"Chroma collection {self._collection.name} "
                     f"contains fewer than {i} elements."
                 )

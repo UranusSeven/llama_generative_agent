@@ -1,6 +1,6 @@
 import pytest
-from langchain.embeddings import LlamaCppEmbeddings
 from chroma import EnhancedChroma
+from langchain.embeddings import LlamaCppEmbeddings
 
 
 def test():
