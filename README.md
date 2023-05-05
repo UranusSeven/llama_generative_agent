@@ -1,3 +1,8 @@
+
+![image](https://user-images.githubusercontent.com/109661872/236526585-acc7b215-8181-4385-aadf-e908b6279251.png)
+
+
+
 # LLaMA Generative Agent
 A generative agent implementation for LLaMA based models, derived from langchain's implementation.
 
