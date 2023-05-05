@@ -6,6 +6,10 @@
 # LLaMA Generative Agent
 A generative agent implementation for LLaMA based models, derived from langchain's implementation.
 
+**This project is still in its early stages. The generative agent's inference is currently quite slow and may not produce reasonable answers. Any suggestions or advice on improving its performance would be greatly appreciated!**
+
+
+
 # Demo
 To run the demo, you need to download a LLaMA based model from huggingface, for example:
 
