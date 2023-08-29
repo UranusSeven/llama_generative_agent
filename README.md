@@ -6,6 +6,11 @@
 # LLaMA Generative Agent
 A generative agent implementation for LLaMA based models, derived from langchain's implementation.
 
+Since LangChain and Chroma has introduced non-backward compatible changes, please **use the following versions:**
+
+- chroma: 0.3.21
+- langchain: 0.0.192
+
 **This project is still in its early stages. The generative agent's inference is currently quite slow and may not produce reasonable answers. Any suggestions or advice on improving its performance would be greatly appreciated!**
 
 
